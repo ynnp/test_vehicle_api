@@ -21,11 +21,11 @@ def get_signal_url(signal_id):
    
     
 def get_update_pins_url(pin_id=None):
-    """ Function to build URL for updating pins or single pin by id
+    """ Function to build URL for updating multiple pins or single pin by id
     
     :param pin_id: pin id to update
     :type pin_id: int
-    :returns: URL for updating pin
+    :returns: URL for updating pin(s)
     :rtype: str
     """
     if pin_id:
@@ -45,8 +45,8 @@ def build_dict_for_updating_pins(pins, voltage):
     :type pins: list
     :param voltage: desired voltage for each pin
     :type voltage: list
-    :returns: 
-    
+    :returns: dict for updating pins 
+    :rtype: dict
     """
     pins_dict = {'Pins': []}
     for pin_id, vltg in zip(pins, voltage):
@@ -66,8 +66,8 @@ def set_battery_state(state, voltage=None):
     :rtype: str
     """
     if voltage is None:
-        voltage = random.randint(cs.BATTERY_STATE_PINS[state]['min'] + 1, 
-                                 cs.BATTERY_STATE_PINS[state]['max'])
+        voltage = random.randint(cs.BATTERY_STATE_PINS[state]["min"] + 1, 
+                                 cs.BATTERY_STATE_PINS[state]["max"])
     
     requests.post(get_update_pins_url(pin_id=cs.BATTERY_PIN_ID), data={'Voltage': voltage})
     battery_state = requests.get(get_signal_url(cs.BATTERY_SIGNAL_ID)).json()
@@ -86,8 +86,8 @@ def set_brake_pedal_state(state, voltage=None):
     :rtype: str
     """
     if voltage is None:
-        voltage = round(random.uniform(cs.BRAKE_PEDAL_STATE_PINS[state]['min'], 
-                                       cs.BRAKE_PEDAL_STATE_PINS[state]['max']),
+        voltage = round(random.uniform(cs.BRAKE_PEDAL_STATE_PINS[state]["min"], 
+                                       cs.BRAKE_PEDAL_STATE_PINS[state]["max"]),
                         2)
     
     requests.post(get_update_pins_url(pin_id=cs.BRAKE_PEDAL_PIN_ID), data={'Voltage': voltage})
@@ -107,8 +107,8 @@ def set_acc_pedal_state(state, voltage=None):
     :rtype: str
     """
     if voltage is None:
-        voltage = round(random.uniform(cs.ACC_PEDAL_POS_PINS[state]['min'], 
-                                       cs.ACC_PEDAL_POS_PINS[state]['max']),
+        voltage = round(random.uniform(cs.ACC_PEDAL_POS_PINS[state]["min"], 
+                                       cs.ACC_PEDAL_POS_PINS[state]["max"]),
                         2)
     
     requests.post(get_update_pins_url(pin_id=cs.ACC_PEDAL_PIN_ID), data={'Voltage': voltage})
